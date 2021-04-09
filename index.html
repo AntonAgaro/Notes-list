@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes list</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+    <div class="search">
+        <div class="search__wrapper">
+            <button class="search__wrapper-btn"><img src="img/search.png" alt="img" class="search__wrapper-btn-img">
+            </button>
+            <input type="text" class="search__wrapper-input" placeholder="Поиск">
+        </div>
+        
+    </div>
+    <div class="wrapper">
+        <div class="wrapper__note">
+            <h2 class="wrapper__note-title">Это заголовок</h2>
+            <p class="wrapper__note-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur, voluptate, ratione libero alias quas modi tempora corporis inventore iusto dolore magnam consectetur sit, autem illo doloribus blanditiis non obcaecati necessitatibus.</p>
+            <div class="wrapper__note-pic">
+                <button class="wrapper__note-delbtn">
+                    <img src="img/delete.png" alt="delete" class="wrapper__note-img">
+                </button>
+            </div>
+        </div>
+    </div>
+    <button class="add"></button>
+</div>
+<div class="overlay">
+    <div class="modal">
+        <input type="text" class="modal__title title" placeholder="Введите заголовок">
+        <input type="text" class="modal__text text" placeholder="Текст заметки">
+        <div class="modal__btnwrapper">
+            <button class="modal__btn create">Создать</button>
+            <button class="modal__btn close">Закрыть</button>
+        </div>
+    </div>
+</div>
+
+<div class="edit__overlay">
+<div class="edit modal">
+    <input type="text" class="edit__title title" placeholder="Редактировать заголовок">
+    <input type="text" class="edit__text text" placeholder=" Редактировать текст">
+    <div class="modal__btnwrapper">
+        <button class="modal__btn save">Сохранить</button>
+        <button class="modal__btn editclose">Закрыть</button>
+    </div>
+</div>
+
+</div>
+
+</body>
+<script src="script.js"></script>
+</html>
