@@ -115,7 +115,7 @@ function createNewNote() {
             note.id = `${i}`;
             note.innerHTML = `
             <h2 class="wrapper__note-title">${item.title}</h2>
-            <p class="wrapper__note-text">${item.text}</p>
+            <p class="wrapper__note-text">${item.text.replace(/\n/g, '<br>')}</p>
             <div class="wrapper__note-pic">
             <button class="wrapper__note-delbtn">
                 <img src="img/delete.png" alt="delete" class="wrapper__note-img">
@@ -169,7 +169,7 @@ function drawChangedNote() {
     notes[noteId].text = editText.value;
     noteDiv.innerHTML = `
     <h2 class="wrapper__note-title">${editTitle.value}</h2>
-    <p class="wrapper__note-text">${editText.value}</p>
+    <p class="wrapper__note-text">${editText.value.replace(/\n/g, '<br>')}</p>
     <div class="wrapper__note-pic">
     <button class="wrapper__note-delbtn">
         <img src="img/delete.png" alt="delete" class="wrapper__note-img">
