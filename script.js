@@ -5,32 +5,111 @@ document.addEventListener('DOMContentLoaded', () => {
           closeBtn = document.querySelector('.close'),
           createNoteBtn = document.querySelector('.create'),
           modalTitle = document.querySelector('.modal__title'),
-          modalText = document.querySelector('.modal__text');
+          modalText = document.querySelector('.modal__text'),
+          modalLabel = document.querySelectorAll('.modal__label'),
+          lengthLabel = document.querySelector('.length');
 
 //делаем пустой массив для заметок
     const notes = [];
 //Делаем функции для открытия и закрытия модального окна создания заметки
     function showModal() {
         overlay.classList.add('active');
+        console.log(typeof modalText.value);
     }
     function closeModal() {
         overlay.classList.remove('active');
-    }
-//Делаем функцию создания заметки, добавления ее в массив, вывода на экран 
-    
-    function createNewNote() {
-        let newNote = {
-            title: modalTitle.value,
-            text: modalText.value
-        };
-        notes.push(newNote);
-        drawNote();
-        closeModal();
-        //Очищаем инпуты модального окна
         modalTitle.value = '';
         modalText.value = '';
-        console.log(notes);
+        removeRedCheck();
     }
+    //Делаем функцию непрошедшей проверки
+    function addRedCheck() {
+        modalTitle.classList.add('checkred');
+        modalText.classList.add('checkred');
+        modalLabel.forEach(item => item.classList.add('active'));
+    }
+    //Убираем красные индикаторы
+    function removeRedCheck() {
+        modalTitle.classList.remove('checkred');
+        modalText.classList.remove('checkred');
+        modalLabel.forEach(item => item.classList.remove('active'));
+        removeCheckTitleLength();
+        // hideTitleSpaces();
+        // hideTextSpaces();
+    }
+    //Ошибка длины заголовка
+    function checkTitleLength() {
+        lengthLabel.classList.add('active');
+        modalTitle.classList.add('checkred');
+    }
+//Убираем ошибку длины заголовка
+    function removeCheckTitleLength() {
+        lengthLabel.classList.remove('active');
+        modalTitle.classList.remove('checkred');
+    }
+//Показываем и убираем лейбл о пробелах в заголовке
+function showTitleSpaces() {
+    const titleSpaces = document.querySelector('.titlespaces');
+    titleSpaces.classList.add('active');
+    modalTitle.classList.add('checkred');
+}
+function hideTitleSpaces() {
+    const titleSpaces = document.querySelector('.titlespaces');
+    titleSpaces.classList.remove('active');
+    modalTitle.classList.remove('checkred');
+}
+//Показываем и убираем лейбл о пробелах в тексте
+function showTextSpaces() {
+    const textSpaces = document.querySelector('.textspaces');
+    textSpaces.classList.add('active');
+    modalText.classList.add('checkred');
+}
+function hideTextSpaces() {
+    const textSpaces = document.querySelector('.textspaces');
+    textSpaces.classList.remove('active');
+    modalText.classList.remove('checkred');
+}
+
+    function createNewNote() {
+        if (modalTitle.value.length > 30) {
+            checkTitleLength();
+            return;
+        } 
+        if (modalTitle.value.length > 0 && modalTitle.value.split('').every(item => item === ' ')) {
+            showTitleSpaces();
+            return;
+        }
+        if (modalText.value.length > 0 && modalText.value.split('').every(item => item === ' ')) {
+            showTextSpaces();
+            return;
+        }
+        if (modalTitle.value.length > 0 && modalTitle.value.trim().length > 0) {
+            let newNote = {
+                title: modalTitle.value,
+                text: modalText.value
+            };
+                notes.push(newNote);
+                drawNote();
+                closeModal();
+                console.log(notes); 
+        } else
+        if (modalText.value.trim().length > 0 && modalText.value.trim().length > 0) {
+            let newNote = {
+                title: modalTitle.value,
+                text: modalText.value
+            };
+                notes.push(newNote);
+                drawNote();
+                closeModal();
+                console.log(notes); 
+        } else {
+           addRedCheck();
+            return;
+            }
+        }
+             
+    
+        
 //Функция вывода на экран новой заметки
     function drawNote() {
         let note = document.createElement('div');
@@ -54,6 +133,9 @@ document.addEventListener('DOMContentLoaded', () => {
     addBtn.addEventListener('click', showModal);
     closeBtn.addEventListener('click', closeModal);
     createNoteBtn.addEventListener('click', createNewNote);
+    modalTitle.addEventListener('click', removeRedCheck);
+    modalText.addEventListener('click', removeRedCheck);
+
 
 //Редактируем заметку
 const editOverlay = document.querySelector('.edit__overlay'),
@@ -70,9 +152,10 @@ let noteId;
 //Функция открытия окна редактирования, если кликнули по нужному элементу
 //Приводим id к числу, чтобы найти заметку по индексу в массиве notes
 function showEditWindow(event) {
-    if (event.target.matches('.wrapper__note') || event.target.matches('.wrapper__note-title') || event.target.matches('.wrapper__note-text')) {
-        noteDiv = event.target.closest('div');
-        noteId = +event.target.closest('div').id;
+    if (event.target.matches('.wrapper__note') || event.target.matches('.wrapper__note-title') || event.target.matches('.wrapper__note-text') 
+    || event.target.matches('.wrapper__note-pic')) {
+        noteDiv = event.target.closest('.wrapper__note');
+        noteId = +event.target.closest('.wrapper__note').id;
         editOverlay.classList.add('active');
     }
 }
@@ -83,7 +166,7 @@ function closeEditWindow() {
 
 //Записываем измененные данные в элемент массива notes
 //Меняем содержание заметки и помещаем ее в начало списка
-function changeNoteInArr() {
+function drawChangedNote() {
     notes[noteId].title = editTitle.value;
     notes[noteId].text = editText.value;
     noteDiv.innerHTML = `
@@ -100,6 +183,28 @@ function changeNoteInArr() {
     editTitle.value = '';
     editText.value = '';
     console.log(notes);
+}
+function changeNoteInArr() {
+    if (editTitle.value.length > 30) {
+        checkTitleLength();
+        return;
+    } 
+    if (editTitle.value.length > 0 && editTitle.value.split('').every(item => item === ' ')) {
+        showTitleSpaces();
+        return;
+    }
+    if (editText.value.length > 0 && editText.value.split('').every(item => item === ' ')) {
+        showTextSpaces();
+        return;
+    }
+    if (editTitle.value.length > 0 && editTitle.value.trim().length > 0) {
+        drawChangedNote();
+    } else
+    if (editText.value.trim().length > 0 && editText.value.trim().length > 0) {
+        drawChangedNote();
+    } else {
+        return;
+    }
 }
 
 wrapper.addEventListener('click', showEditWindow);
@@ -149,4 +254,3 @@ searchBtn.addEventListener('click', filter);
 
 
 });
-
