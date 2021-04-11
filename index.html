@@ -18,15 +18,6 @@
         
     </div>
     <div class="wrapper">
-        <div class="wrapper__note">
-            <h2 class="wrapper__note-title">Это заголовок</h2>
-            <p class="wrapper__note-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur, voluptate, ratione libero alias quas modi tempora corporis inventore iusto dolore magnam consectetur sit, autem illo doloribus blanditiis non obcaecati necessitatibus.</p>
-            <div class="wrapper__note-pic">
-                <button class="wrapper__note-delbtn">
-                    <img src="img/delete.png" alt="delete" class="wrapper__note-img">
-                </button>
-            </div>
-        </div>
     </div>
     <button class="add"></button>
 </div>
@@ -49,13 +40,13 @@
 
 <div class="edit__overlay">
 <div class="edit modal">
-    <input type="text" name="title" class="edit__title title" placeholder="Редактировать заголовок">
-    <label class="modal__label" for="title">Заполните заголовок или текст заметки</label>
-    <label class="modal__label length" for="title">Введите не больше 30 символов</label>
-    <label class="modal__label titlespaces" for="title">Текст не может состоять только из пробелов</label>
+    <input type="text" name="edittitle" class="edit__title title" placeholder="Редактировать заголовок">
+    <label class="edit__label" for="edittitle">Заполните заголовок или текст заметки</label>
+    <label class="edit__label editlength" for="edittitle">Введите не больше 30 символов</label>
+    <label class="edit__label edittitlespaces" for="title">Текст не может состоять только из пробелов</label>
     <textarea name="text" id="" cols="30" rows="10" class="edit__text text" placeholder="Текст заметки"></textarea>
-    <label class="modal__label" for="text">Заполните текст или заголовок заметки</label>
-    <label class="modal__label textspaces" for="text">Текст не может состоять только из пробелов</label>
+    <label class="edit__label" for="text">Заполните текст или заголовок заметки</label>
+    <label class="edit__label edittextspaces" for="text">Текст не может состоять только из пробелов</label>
 
     <!-- <input type="text" class="edit__text text" placeholder=" Редактировать текст"> -->
     <div class="modal__btnwrapper">

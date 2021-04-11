@@ -14,7 +14,6 @@ document.addEventListener('DOMContentLoaded', () => {
 //Делаем функции для открытия и закрытия модального окна создания заметки
     function showModal() {
         overlay.classList.add('active');
-        console.log(typeof modalText.value);
     }
     function closeModal() {
         overlay.classList.remove('active');
@@ -70,46 +69,44 @@ function hideTextSpaces() {
     modalText.classList.remove('checkred');
 }
 
-    function createNewNote() {
-        if (modalTitle.value.length > 30) {
-            checkTitleLength();
-            return;
-        } 
-        if (modalTitle.value.length > 0 && modalTitle.value.split('').every(item => item === ' ')) {
-            showTitleSpaces();
-            return;
+function createNewNote() {
+    if (modalTitle.value.length > 30) {
+        checkTitleLength();
+        return;
+    } 
+    if (modalTitle.value.length > 0 && modalTitle.value.split('').every(item => item === ' ')) {
+        showTitleSpaces();
+        return;
+    }
+    if (modalText.value.length > 0 && modalText.value.split('').every(item => item === ' ')) {
+        showTextSpaces();
+        return;
+    }
+    if (modalTitle.value.length > 0 && modalTitle.value.trim().length > 0) {
+        let newNote = {
+            title: modalTitle.value,
+            text: modalText.value
+        };
+            notes.push(newNote);
+            drawNote();
+            closeModal();
+            console.log(notes); 
+    } else
+    if (modalText.value.trim().length > 0 && modalText.value.trim().length > 0) {
+        let newNote = {
+            title: modalTitle.value,
+            text: modalText.value
+        };
+            notes.push(newNote);
+            drawNote();
+            closeModal();
+            console.log(notes); 
+    } else {
+        addRedCheck();
+        return;
         }
-        if (modalText.value.length > 0 && modalText.value.split('').every(item => item === ' ')) {
-            showTextSpaces();
-            return;
-        }
-        if (modalTitle.value.length > 0 && modalTitle.value.trim().length > 0) {
-            let newNote = {
-                title: modalTitle.value,
-                text: modalText.value
-            };
-                notes.push(newNote);
-                drawNote();
-                closeModal();
-                console.log(notes); 
-        } else
-        if (modalText.value.trim().length > 0 && modalText.value.trim().length > 0) {
-            let newNote = {
-                title: modalTitle.value,
-                text: modalText.value
-            };
-                notes.push(newNote);
-                drawNote();
-                closeModal();
-                console.log(notes); 
-        } else {
-           addRedCheck();
-            return;
-            }
-        }
+    }
              
-    
-        
 //Функция вывода на экран новой заметки
     function drawNote() {
         let note = document.createElement('div');
@@ -128,14 +125,12 @@ function hideTextSpaces() {
             wrapper.prepend(note);
         });
     }
-    
 //Вешаем обработчики событий на кнопки добавить, закрыть, создать, 
     addBtn.addEventListener('click', showModal);
     closeBtn.addEventListener('click', closeModal);
     createNoteBtn.addEventListener('click', createNewNote);
     modalTitle.addEventListener('click', removeRedCheck);
     modalText.addEventListener('click', removeRedCheck);
-
 
 //Редактируем заметку
 const editOverlay = document.querySelector('.edit__overlay'),
@@ -162,6 +157,9 @@ function showEditWindow(event) {
 
 function closeEditWindow() {
     editOverlay.classList.remove('active');
+    editTitle.value = '';
+    editText.value = '';
+    removeEditRedCheck();
 }
 
 //Записываем измененные данные в элемент массива notes
@@ -182,19 +180,20 @@ function drawChangedNote() {
     closeEditWindow();
     editTitle.value = '';
     editText.value = '';
+    removeEditRedCheck();
     console.log(notes);
 }
 function changeNoteInArr() {
     if (editTitle.value.length > 30) {
-        checkTitleLength();
+        checkEditTitleLength();
         return;
     } 
     if (editTitle.value.length > 0 && editTitle.value.split('').every(item => item === ' ')) {
-        showTitleSpaces();
+        showEditTitleSpaces();
         return;
     }
     if (editText.value.length > 0 && editText.value.split('').every(item => item === ' ')) {
-        showTextSpaces();
+        showEditTextSpaces();
         return;
     }
     if (editTitle.value.length > 0 && editTitle.value.trim().length > 0) {
@@ -203,13 +202,62 @@ function changeNoteInArr() {
     if (editText.value.trim().length > 0 && editText.value.trim().length > 0) {
         drawChangedNote();
     } else {
+        editRedCheck();
         return;
     }
 }
+//Функции ошибок при редактировании
+//Делаем функцию непрошедшей проверки
+const editLabel = document.querySelectorAll('.edit__label');
+const editLengthLabel = document.querySelector('.editlength');
+
+function editRedCheck() {
+    editTitle.classList.add('checkred');
+    editText.classList.add('checkred');
+    editLabel.forEach(item => item.classList.add('active'));
+}
+//Убираем красные индикаторы
+function removeEditRedCheck() {
+    editTitle.classList.remove('checkred');
+    editText.classList.remove('checkred');
+    editLabel.forEach(item => item.classList.remove('active'));
+    removeEditCheckTitleLength();
+}
+//Ошибка длины заголовка
+function checkEditTitleLength() {
+    editLengthLabel.classList.add('active');
+    editTitle.classList.add('checkred');
+}
+//Убираем ошибку длины заголовка
+function removeEditCheckTitleLength() {
+    editLengthLabel.classList.remove('active');
+    editTitle.classList.remove('checkred');
+}
+//Показываем и убираем лейбл о пробелах в заголовке
+function showEditTitleSpaces() {
+    const editTitleSpaces = document.querySelector('.edittitlespaces');
+    editTitleSpaces.classList.add('active');
+    editTitle.classList.add('checkred');
+}
+function hideEditTitleSpaces() {
+    const editTitleSpaces = document.querySelector('.edittitlespaces');
+    editTitleSpaces.classList.remove('active');
+    editTitle.classList.remove('checkred');
+}
+//Показываем и убираем лейбл о пробелах в тексте
+function showEditTextSpaces() {
+    const editTextSpaces = document.querySelector('.edittextspaces');
+    editTextSpaces.classList.add('active');
+    editText.classList.add('checkred');
+}
+
 
 wrapper.addEventListener('click', showEditWindow);
 saveBtn.addEventListener('click', changeNoteInArr);
 editCloseBtn.addEventListener('click', closeEditWindow);
+editTitle.addEventListener('click', removeEditRedCheck);
+editText.addEventListener('click', removeEditRedCheck);
+
 
 //Удаляем заметку
 function deleteNote(event) {
