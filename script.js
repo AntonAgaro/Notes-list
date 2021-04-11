@@ -288,7 +288,7 @@ const searchBtn = document.querySelector('.search__wrapper-btn'),
 
 function filter() {
     const allNotes = document.querySelectorAll('.wrapper__note');
-    const reg = new RegExp(`${searchInput.value}`, 'ig');
+    const reg = new RegExp(`${searchInput.value}`, 'i', 'g');
     console.log(reg);
     allNotes.forEach(item => {
     console.log(item.innerHTML);
