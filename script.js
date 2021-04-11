@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const addBtn = document.querySelector('.add'),
           overlay = document.querySelector('.overlay'),
+          modalWindow = document.querySelector('.modal'),
           wrapper = document.querySelector('.wrapper'),
           closeBtn = document.querySelector('.close'),
           createNoteBtn = document.querySelector('.create'),
@@ -20,6 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
         modalTitle.value = '';
         modalText.value = '';
         removeRedCheck();
+        resetColor();
     }
     //Делаем функцию непрошедшей проверки
     function addRedCheck() {
@@ -123,6 +125,7 @@ function createNewNote() {
             </div>
             `;
             wrapper.prepend(note);
+            note.style.backgroundColor = setColor;
         });
     }
 //Вешаем обработчики событий на кнопки добавить, закрыть, создать, 
@@ -160,6 +163,7 @@ function closeEditWindow() {
     editTitle.value = '';
     editText.value = '';
     removeEditRedCheck();
+    resetEditColor();
 }
 
 //Записываем измененные данные в элемент массива notes
@@ -177,6 +181,7 @@ function drawChangedNote() {
     </div>
     `;
     wrapper.prepend(noteDiv);
+    noteDiv.style.backgroundColor = editNewColor;
     closeEditWindow();
     editTitle.value = '';
     editText.value = '';
@@ -297,8 +302,41 @@ function filter() {
     }
 });
 }
-
 searchBtn.addEventListener('click', filter);
+
+//Добавление цвета заметке
+const colorPicker = document.querySelector('.colorpicker'),
+      addColorBtn = document.querySelector('.addColor');
+function pickColor(event) {
+    const window = event.target.closest('.modal');
+    window.style.backgroundColor = colorPicker.value;
+    setColor = colorPicker.value;
+}
+let setColor;
+
+function resetColor() {
+    modalWindow.style.backgroundColor = '#fff';
+    setColor = '';
+}
+addColorBtn.addEventListener('click', pickColor);
+
+//Функция редактирования цвета
+const editColorPicker = document.querySelector('.editcolorpicker'),
+      editColorBtn = document.querySelector('.editColor');
+
+function editColor(event) {
+    const window = event.target.closest('.edit');
+    window.style.backgroundColor = editColorPicker.value;
+    editNewColor = editColorPicker.value;
+}
+let editNewColor;
+
+function resetEditColor() {
+    const editWindow = document.querySelector('.edit');
+    editWindow.style.backgroundColor = '#fff';
+    editNewColor = '';
+}
+editColorBtn.addEventListener('click', editColor);
 
 
 });
